@@ -21,15 +21,15 @@ int main(int argc, char const *argv[])
     cout << "Scoket criado com sucesso!" << endl;
 
     // configurar estrutura de endereco do socket
-    struct sockaddr_in enderecoSockIpv4Tcp;
-    enderecoSockIpv4Tcp.sin_family = AF_INET;
-    enderecoSockIpv4Tcp.sin_port = htons(2000);
-    enderecoSockIpv4Tcp.sin_addr.s_addr = INADDR_ANY;
+    struct sockaddr_in enderecoServerSockIpv4Tcp;
+    enderecoServerSockIpv4Tcp.sin_family = AF_INET;
+    enderecoServerSockIpv4Tcp.sin_port = htons(2000);
+    enderecoServerSockIpv4Tcp.sin_addr.s_addr = INADDR_ANY;
 
     cout << "Endereco do socket configurado com sucesso!" << endl;
 
     // associar endereco ao socket
-    int resultadobind = bind(serverSocketfd, (struct sockaddr *)&enderecoSockIpv4Tcp, sizeof(enderecoSockIpv4Tcp));
+    int resultadobind = bind(serverSocketfd, (struct sockaddr *)&enderecoServerSockIpv4Tcp, sizeof(enderecoServerSockIpv4Tcp));
     if(resultadobind < 0){
         cout << "Erro ao associar endereco ao socket" << endl;
         return 1;
@@ -44,7 +44,17 @@ int main(int argc, char const *argv[])
     }
     cout << "Servidor aguardando conexoes..." << endl;
 
-    close(serverSocketfd);
+    // aceitar conexoes
+    struct sockaddr_in enderecoClientSocketfd;
+    socklen_t tamanhoEstruturaCliente = sizeof(enderecoClientSocketfd);
+    int clientSocketfd = accept(serverSocketfd, (struct sockaddr *)&enderecoClientSocketfd, &tamanhoEstruturaCliente);
+    if(clientSocketfd < 0){
+        cout << "Erro ao aceitar cliente." << endl;
+        return 1;
+    }
+    cout << "Cliente conectado com sucesso!" << endl;
 
+    close(clientSocketfd);
+    close(serverSocketfd);
     return 0;
 }
