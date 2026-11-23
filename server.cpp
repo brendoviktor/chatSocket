@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
     // configurar estrutura de endereco do socket
     struct sockaddr_in enderecoServerSockIpv4Tcp;
     enderecoServerSockIpv4Tcp.sin_family = AF_INET;
-    enderecoServerSockIpv4Tcp.sin_port = htons(2000);
+    enderecoServerSockIpv4Tcp.sin_port = htons(8080);
     enderecoServerSockIpv4Tcp.sin_addr.s_addr = INADDR_ANY;
 
     cout << "Endereco do socket configurado com sucesso!" << endl;
